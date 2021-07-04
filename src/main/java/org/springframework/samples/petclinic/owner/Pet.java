@@ -83,7 +83,7 @@ public class Pet extends NamedEntity {
 		return this.owner;
 	}
 
-	protected void setOwner(Owner owner) {
+	public void setOwner(Owner owner) {
 		this.owner = owner;
 	}
 
@@ -108,5 +108,4 @@ public class Pet extends NamedEntity {
 		getVisitsInternal().add(visit);
 		visit.setPetId(this.getId());
 	}
-
 }

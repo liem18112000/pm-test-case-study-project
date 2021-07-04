@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.samples.petclinic.owner.*;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.time.LocalDate;
 
 @RestController
@@ -39,7 +40,7 @@ public class PetEndPoint {
 	}
 
 	@PostMapping("api/pet")
-	public ResponseEntity<?> save(@RequestBody CreatePetRequest request) {
+	public ResponseEntity<?> save(@RequestBody CreatePetRequest request, @Valid Pet pet) {
 		Pet newPet = new Pet();
 		newPet.setName(request.getName());
 		newPet.setBirthDate(request.getBirth_date());
@@ -54,15 +55,15 @@ public class PetEndPoint {
 			newPet.setType(petType);
 		}
 
-//		final Owner owner = this.ownerRepository.findById(request.getOwner_id());
-//		if(owner == null) {
-//			return new ResponseEntity<>(
-//				"Owner with id '" + Integer.toString(request.getOwner_id()) + "' is not found",
-//				HttpStatus.NOT_FOUND
-//			);
-//		}else{
-//			newPet.setOwner()
-//		}
+		final Owner owner = this.ownerRepository.findById(request.getOwner_id());
+		if(owner == null) {
+			return new ResponseEntity<>(
+				"Owner with id '" + Integer.toString(request.getOwner_id()) + "' is not found",
+				HttpStatus.NOT_FOUND
+			);
+		}else{
+			newPet.setOwner(owner);
+		}
 
 		this.petRepository.save(newPet);
 		return ResponseEntity.ok(
@@ -85,6 +86,18 @@ public class PetEndPoint {
 				);
 			}else{
 				target.setType(petType);
+			}
+		}
+
+		if(request.getOwner_id() != -1) {
+			final Owner owner = this.ownerRepository.findById(request.getOwner_id());
+			if(owner == null) {
+				return new ResponseEntity<>(
+					"Owner with id '" + Integer.toString(request.getOwner_id()) + "' is not found",
+					HttpStatus.NOT_FOUND
+				);
+			}else{
+				target.setOwner(owner);
 			}
 		}
 
