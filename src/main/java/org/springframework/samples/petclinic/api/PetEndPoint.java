@@ -70,6 +70,30 @@ public class PetEndPoint {
 		);
 	}
 
+	@PutMapping("api/pet/{id}")
+	public ResponseEntity<?> up(@RequestBody UpdatePetRequest request, @PathVariable(name="id") int id) {
+		Pet target = this.petRepository.findById(id);
+		target.setName(request.getName() != null ? request.getName() : target.getName());
+		target.setBirthDate(request.getBirth_date() != null ? request.getBirth_date() : target.getBirthDate());
+
+		if(request.getType_id() != -1) {
+			final PetType petType = this.petRepository.findPetTypeByID(request.getType_id());
+			if(petType == null){
+				return new ResponseEntity<>(
+					"Pet type with id '" + Integer.toString(request.getType_id()) + "' is not found",
+					HttpStatus.NOT_FOUND
+				);
+			}else{
+				target.setType(petType);
+			}
+		}
+
+		this.petRepository.save(target);
+		return ResponseEntity.ok(
+			"Update pet successfully"
+		);
+	}
+
 	@AllArgsConstructor
 	@Getter
 	static private class CreatePetRequest {
