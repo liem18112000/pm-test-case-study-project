@@ -37,7 +37,7 @@ public class FindOwnerForm {
 		this.btnButton.pressEnter();
 
 		$("body > div.container-fluid > div > table.table.table-striped > tbody > tr:nth-child(1) > td")
-			.shouldHave(Condition.text("George Franklin"));
+				.shouldHave(Condition.text("George Franklin"));
 
 		assertEquals(this.domain + "/owners/1", WebDriverRunner.getWebDriver().getCurrentUrl());
 	}
