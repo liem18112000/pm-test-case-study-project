@@ -50,12 +50,11 @@ public class PetEndPoint {
 		}
 
 		final Owner owner = this.ownerRepository.findById(request.getOwner_id());
-		if(owner == null) {
-			return new ResponseEntity<>(
-				"Owner with id '" + Integer.toString(request.getOwner_id()) + "' is not found",
-				HttpStatus.NOT_FOUND
-			);
-		}else{
+		if (owner == null) {
+			return new ResponseEntity<>("Owner with id '" + Integer.toString(request.getOwner_id()) + "' is not found",
+					HttpStatus.NOT_FOUND);
+		}
+		else {
 			newPet.setOwner(owner);
 		}
 
@@ -64,39 +63,37 @@ public class PetEndPoint {
 	}
 
 	@PutMapping("api/pet/{id}")
-	public ResponseEntity<?> up(@RequestBody UpdatePetRequest request, @PathVariable(name="id") int id) {
+	public ResponseEntity<?> up(@RequestBody UpdatePetRequest request, @PathVariable(name = "id") int id) {
 		Pet target = this.petRepository.findById(id);
 		target.setName(request.getName() != null ? request.getName() : target.getName());
 		target.setBirthDate(request.getBirth_date() != null ? request.getBirth_date() : target.getBirthDate());
 
-		if(request.getType_id() != -1) {
+		if (request.getType_id() != -1) {
 			final PetType petType = this.petRepository.findPetTypeByID(request.getType_id());
-			if(petType == null){
+			if (petType == null) {
 				return new ResponseEntity<>(
-					"Pet type with id '" + Integer.toString(request.getType_id()) + "' is not found",
-					HttpStatus.NOT_FOUND
-				);
-			}else{
+						"Pet type with id '" + Integer.toString(request.getType_id()) + "' is not found",
+						HttpStatus.NOT_FOUND);
+			}
+			else {
 				target.setType(petType);
 			}
 		}
 
-		if(request.getOwner_id() != -1) {
+		if (request.getOwner_id() != -1) {
 			final Owner owner = this.ownerRepository.findById(request.getOwner_id());
-			if(owner == null) {
+			if (owner == null) {
 				return new ResponseEntity<>(
-					"Owner with id '" + Integer.toString(request.getOwner_id()) + "' is not found",
-					HttpStatus.NOT_FOUND
-				);
-			}else{
+						"Owner with id '" + Integer.toString(request.getOwner_id()) + "' is not found",
+						HttpStatus.NOT_FOUND);
+			}
+			else {
 				target.setOwner(owner);
 			}
 		}
 
 		this.petRepository.save(target);
-		return ResponseEntity.ok(
-			"Update pet successfully"
-		);
+		return ResponseEntity.ok("Update pet successfully");
 	}
 
 	@AllArgsConstructor

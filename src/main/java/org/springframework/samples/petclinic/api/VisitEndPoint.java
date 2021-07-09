@@ -20,36 +20,29 @@ import java.util.List;
 public class VisitEndPoint {
 
 	private final VisitRepository visitRepository;
+
 	private final PetRepository petRepository;
 
 	@GetMapping("api/visit/petID/{petID}")
-	public ResponseEntity<?> getByPetID(@PathVariable(name="petID") int petID) {
+	public ResponseEntity<?> getByPetID(@PathVariable(name = "petID") int petID) {
 		final List<Visit> target = this.visitRepository.findByPetId(petID);
-		if(target.isEmpty()) {
-			return new ResponseEntity<>(
-				"Visit with Pet ID '" + Integer.toString(petID) + "' is not found",
-				HttpStatus.NOT_FOUND
-			);
+		if (target.isEmpty()) {
+			return new ResponseEntity<>("Visit with Pet ID '" + Integer.toString(petID) + "' is not found",
+					HttpStatus.NOT_FOUND);
 		}
 
-		return ResponseEntity.ok(
-			target
-		);
+		return ResponseEntity.ok(target);
 	}
 
 	@GetMapping("api/visit/{id}")
-	public ResponseEntity<?> getByID(@PathVariable(name="id") int id) {
+	public ResponseEntity<?> getByID(@PathVariable(name = "id") int id) {
 		final Visit target = this.visitRepository.findById(id);
-		if(target == null) {
-			return new ResponseEntity<>(
-				"Visit with ID '" + Integer.toString(id) + "' is not found",
-				HttpStatus.NOT_FOUND
-			);
+		if (target == null) {
+			return new ResponseEntity<>("Visit with ID '" + Integer.toString(id) + "' is not found",
+					HttpStatus.NOT_FOUND);
 		}
 
-		return ResponseEntity.ok(
-			target
-		);
+		return ResponseEntity.ok(target);
 	}
 
 	@PostMapping("api/visit")
@@ -58,12 +51,11 @@ public class VisitEndPoint {
 		newVisit.setDate(request.getDate());
 		newVisit.setDescription(request.getDescription());
 
-		if(this.petRepository.findById(request.getPetId()) == null) {
-			return new ResponseEntity<>(
-				"Pet with id '" + Integer.toString(request.getPetId()) + "' is not found",
-				HttpStatus.NOT_FOUND
-			);
-		}else{
+		if (this.petRepository.findById(request.getPetId()) == null) {
+			return new ResponseEntity<>("Pet with id '" + Integer.toString(request.getPetId()) + "' is not found",
+					HttpStatus.NOT_FOUND);
+		}
+		else {
 			newVisit.setPetId(request.getPetId());
 		}
 
@@ -72,23 +64,20 @@ public class VisitEndPoint {
 	}
 
 	@PutMapping("api/visit/{id}")
-	public ResponseEntity<?> update(@RequestBody UpdateVisitRequest request, @PathVariable(name="id") int id) {
+	public ResponseEntity<?> update(@RequestBody UpdateVisitRequest request, @PathVariable(name = "id") int id) {
 		Visit target = this.visitRepository.findById(id);
 
-		if(target == null) {
-			return new ResponseEntity<>(
-				"Pet with id '" + Integer.toString(id) + "' is not found",
-				HttpStatus.NOT_FOUND
-			);
+		if (target == null) {
+			return new ResponseEntity<>("Pet with id '" + Integer.toString(id) + "' is not found",
+					HttpStatus.NOT_FOUND);
 		}
 
-		if(request.getPetId() != -1){
-			if(this.petRepository.findById(request.getPetId()) == null) {
-				return new ResponseEntity<>(
-					"Pet with id '" + Integer.toString(request.getPetId()) + "' is not found",
-					HttpStatus.NOT_FOUND
-				);
-			}else{
+		if (request.getPetId() != -1) {
+			if (this.petRepository.findById(request.getPetId()) == null) {
+				return new ResponseEntity<>("Pet with id '" + Integer.toString(request.getPetId()) + "' is not found",
+						HttpStatus.NOT_FOUND);
+			}
+			else {
 				target.setPetId(request.getPetId());
 			}
 		}
@@ -110,6 +99,7 @@ public class VisitEndPoint {
 		private final String description;
 
 		private final Integer petId;
+
 	}
 
 	@AllArgsConstructor
@@ -122,5 +112,7 @@ public class VisitEndPoint {
 		private String description = null;
 
 		private Integer petId = -1;
+
 	}
+
 }
