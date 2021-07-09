@@ -14,8 +14,7 @@ public class VetEndPoint {
 
 	@GetMapping("api/vet")
 	public ResponseEntity<?> getAll() {
-		return ResponseEntity.ok(
-			this.vetRepository.findAll()
-		);
+		return ResponseEntity.ok(this.vetRepository.findAll());
 	}
+
 }
