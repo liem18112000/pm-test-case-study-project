@@ -56,4 +56,18 @@ public class FindOwnerForm {
 		assertEquals(this.domain + "/owners/2", WebDriverRunner.getWebDriver().getCurrentUrl());
 	}
 
+	@Test
+	public void thirdFormTest() {
+		SelenideElement elementP = $("#lastNameGroup > div > span > div > p");
+
+		this.lastNameInput.sendKeys("abcxyz123");
+		elementP.shouldNot(Condition.exist);
+
+		this.btnButton.pressEnter();
+
+		elementP.should(Condition.exist);
+		elementP.should(Condition.visible);
+		elementP.should(Condition.text("has not been found"));
+	}
+
 }

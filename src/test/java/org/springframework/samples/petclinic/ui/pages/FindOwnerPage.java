@@ -14,14 +14,18 @@ import static com.codeborne.selenide.Selenide.open;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class FindOwnerPage {
+
 	private final String domain = "http://localhost:8080/owners/find";
+
 	private final String domain2 = "http://localhost:8080/owners/new";
+
 	@BeforeEach
 	public void openPage() {
-		open(this.domain );
+		open(this.domain);
 	}
 
 	List<SelenideElement> elementList = new ArrayList<SelenideElement>();
+
 	public FindOwnerPage() {
 		this.elementList.add($("#main-navbar > ul > li.active"));
 		this.elementList.add($("#main-navbar > ul > li:nth-child(2)"));
@@ -29,19 +33,22 @@ public class FindOwnerPage {
 		this.elementList.add($("#main-navbar > ul > li:nth-child(4)"));
 		this.openPage();
 	}
+
 	@Test
-	public void  elementExist(){
+	public void elementExist() {
 		this.elementList.forEach(element -> {
 			element.should(Condition.exist);
 		});
 	}
-	public void testAddOwnerbtn(){
+
+	public void testAddOwnerbtn() {
 		SelenideElement btnLink = $("body > div.container-fluid > div > a");
 		btnLink.should(Condition.exist);
 		btnLink.should(Condition.visible);
 		btnLink.click();
-		String currentURL= WebDriverRunner.getWebDriver().getCurrentUrl();
-		assertEquals(domain2,currentURL);
+		String currentURL = WebDriverRunner.getWebDriver().getCurrentUrl();
+		assertEquals(domain2, currentURL);
 
 	}
+
 }
